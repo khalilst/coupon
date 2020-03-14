@@ -1,14 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -36,4 +37,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Create a personal passport token
+     *
+     * @return string
+     */
+    public function createAccessToken()
+    {
+        $this->logout();
+
+        return $this->createToken(config('app.name'))->accessToken;
+    }
+
+    /**
+     * Remove all passport tokens
+     *
+     * @return void
+     */
+    public function logout()
+    {
+        $this->tokens()->delete();
+    }
 }
