@@ -57,4 +57,24 @@ class User extends Authenticatable
     {
         $this->tokens()->delete();
     }
+
+    /**
+     * Return the user roles
+     *
+     * @return BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Indicate the current user has the admin role.
+     *
+     * @return boolean
+     */
+    public function getIsAdminAttribute()
+    {
+        return $this->roles()->whereSlug('admin')->exists();
+    }
 }
