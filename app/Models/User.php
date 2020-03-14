@@ -45,8 +45,6 @@ class User extends Authenticatable
      */
     public function createAccessToken()
     {
-        $this->logout();
-
         return $this->createToken(config('app.name'))->accessToken;
     }
 
