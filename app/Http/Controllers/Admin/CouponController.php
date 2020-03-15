@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\CodesUploaded;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CouponRequest;
 use App\Http\Resources\Admin\CouponResource;
@@ -25,12 +26,14 @@ class CouponController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CouponRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(CouponRequest $request)
     {
         $coupon = Coupon::generate($request->all());
+
+        $this->processCodes($request, $coupon);
 
         return json(OK + ['coupon' => new CouponResource($coupon)]);
     }
@@ -49,14 +52,17 @@ class CouponController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CouponRequest  $request
      * @param  \App\Models\Coupon  $coupon
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Coupon $coupon)
+    public function update(CouponRequest $request, Coupon $coupon)
     {
         $hasUser = $coupon->usersCount;
+
         $coupon = $coupon->modify($request->all());
+
+        $this->processCodes($request, $coupon);
 
         $result = OK + ['coupon' => new CouponResource($coupon)];
 
@@ -80,5 +86,20 @@ class CouponController extends Controller
             : NOK + ['message' => __('messages.coupon.delete_failed')];
 
         return json($result);
+    }
+
+    /**
+     * Process the codes file
+     *
+     * @param  Request $request
+     * @param  Coupon  $coupon
+     * @return void
+     */
+    public function processCodes(Request $request, Coupon $coupon)
+    {
+        if ($request->has('codes')) {
+            $request->file('codes')->storeAs('/', $coupon->id, ['disk' => 'codes']);
+            event(new CodesUploaded($coupon));
+        }
     }
 }

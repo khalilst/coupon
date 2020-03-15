@@ -24,6 +24,8 @@ class CouponResource extends JsonResource
             'published_at'
         ) + [
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'codes_count' => $this->codes()->count(),
+            'users_count' => $this->usersCount,
             'brand' => [
                 'id' => $this->brand->id,
                 'name' => $this->brand->name,

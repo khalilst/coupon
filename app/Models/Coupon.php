@@ -102,7 +102,7 @@ class Coupon extends Model
         $brand = Brand::findOrFail($data['brand_id']);
         $coupon = $brand->coupons()->create($data);
 
-        if ($coupon->type == ECouponType::DISCOUNT_CODE) {
+        if (isset($data['code']) && $coupon->type == ECouponType::DISCOUNT_CODE) {
             $coupon->codes()->create([
                 'value' => $data['code'],
                 'type' => ECodeType::NORMAL,
@@ -158,7 +158,7 @@ class Coupon extends Model
      *
      * @return int
      */
-    public function getUserCountCacheKeyAttribute()
+    public function getUsersCountCacheKeyAttribute()
     {
         return "coupon_user_count_{$this->id}";
     }
@@ -168,9 +168,9 @@ class Coupon extends Model
      *
      * @return int
      */
-    public function getUserCountAttribute()
+    public function getUsersCountAttribute()
     {
-        return cache()->rememberForever($this->userCountCacheKey, function () {
+        return cache()->rememberForever($this->usersCountCacheKey, function () {
             return $this->codes()
                 ->join('code_user', 'code_user.code_id', '=', 'codes.id')
                 ->count();
@@ -183,10 +183,64 @@ class Coupon extends Model
      * @param  int $value [default = 1]
      * @return int
      */
-    public function incUserCount($value = 1)
+    public function incUsersCount($value = 1)
     {
-        return cache()->has($this->userCountCacheKey)
-            ? cache()->increment($this->userCountCacheKey, $value = 1)
-            : $this->userCount;
+        return cache()->has($this->usersCountCacheKey)
+            ? cache()->increment($this->usersCountCacheKey, $value = 1)
+            : $this->usersCount;
+    }
+
+    /**
+     * Process the specified file to create/update coupon codes.
+     *
+     * @return this
+     */
+    public function processCodes()
+    {
+        $filename = $this->codesFilename;
+
+        //We couldn't update codes when they are assigned to users
+        if ($this->usersCount) {
+            unlink($filename);
+            return $this;
+        }
+
+        $limit = config('coupon.codes_create_many_limit');
+
+        $file = fopen($filename, 'r');
+
+        if ($file) {
+            $this->codes()->delete();
+
+            $list = [];
+            while ($line = fgets($file) !== false) {
+                $list[] = [
+                    'coupon_id' => $this->id,
+                    'type' => ECodeType::UNIQUE,
+                    'value' => $line,
+                ];
+
+                if (count($list) >= $limit) {
+                    Code::insert($list);
+                    $list = [];
+                }
+            }
+            Code::insert($list);
+
+            fclose($file);
+            unlink($filename);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Return the coupon codes full path.
+     *
+     * @return string
+     */
+    public function getCodesFilenameAttribute()
+    {
+        return storage_path('codes') . "/{$this->id}";
     }
 }
