@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 */
 
 define('OK', ['status' => true]);
+define('NOK', ['status' => false]); //Not OK result.
 
 /*
 |--------------------------------------------------------------------------
