@@ -77,4 +77,14 @@ class User extends Authenticatable
     {
         return $this->roles()->whereSlug('admin')->exists();
     }
+
+    /**
+     * Return the given coupon codes
+     *
+     * @return BelongsTo
+     */
+    public function codes()
+    {
+        return $this->belongsTo(Code::class);
+    }
 }
