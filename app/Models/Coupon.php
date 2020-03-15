@@ -88,7 +88,7 @@ class Coupon extends Model
      */
     public function getTypeTitleAttribute()
     {
-        return ECouponType::__($this->type);
+        return ECouponType::__((int) $this->type);
     }
 
     /**

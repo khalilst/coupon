@@ -43,6 +43,6 @@ class Code extends Model
      */
     public function getTypeTitleAttribute()
     {
-        return ECodeType::__($this->type);
+        return ECodeType::__((int) $this->type);
     }
 }
