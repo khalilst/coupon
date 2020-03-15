@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ECodeType;
 use Illuminate\Database\Eloquent\Model;
 
 class Code extends Model
@@ -12,7 +13,7 @@ class Code extends Model
      * @var array
      */
     protected $fillable = [
-        'code', 'type'
+        'value', 'type'
     ];
 
     /**
@@ -32,6 +33,16 @@ class Code extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot('created_at');
+    }
+
+    /**
+     * Return the translation of the coupon type
+     *
+     * @return string
+     */
+    public function getTypeTitleAttribute()
+    {
+        return ECodeType::__($this->type);
     }
 }

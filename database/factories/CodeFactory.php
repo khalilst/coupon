@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Code::class, function (Faker $faker) {
     return [
-        'code' => randomStr(),
+        'value' => randomStr(),
         'type' => ECodeType::randomValue(),
     ];
 });

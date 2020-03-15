@@ -16,7 +16,7 @@ class CreateCodesTable extends Migration
         Schema::create('codes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('coupon_id');
-            $table->string('code');
+            $table->string('value');
             $table->unsignedTinyInteger('type');
             $table->timestamps();
 
