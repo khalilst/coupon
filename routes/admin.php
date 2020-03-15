@@ -2,10 +2,14 @@
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Admin Coupon Routes
 |--------------------------------------------------------------------------
 */
 
-Route::get('test', function () {
-    return json(OK);
+Route::group(['prefix' => 'coupons'], function () {
+    Route::get('/', 'CouponController@index');
+    Route::post('/', 'CouponController@store');
+    Route::get('/{coupon}', 'CouponController@show');
+    Route::patch('/{coupon}', 'CouponController@update');
+    Route::delete('/{coupon}', 'CouponController@destroy');
 });
