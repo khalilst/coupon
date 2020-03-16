@@ -12,5 +12,17 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $routes = collect(app()->routes->getRoutes())->map(function ($route) {
+        $middleware = collect($route->gatherMiddleware())->map(function ($middleware) {
+            return $middleware instanceof Closure ? 'Closure' : $middleware;
+        })->implode(',');
+
+        return [
+            'method' => implode('|', $route->methods()),
+            'uri' => $route->uri(),
+            'action' => ltrim($route->getActionName(), '\\'),
+            'middleware' => $middleware,
+        ];
+    });
+    return view('welcome', compact('routes'));
 });
