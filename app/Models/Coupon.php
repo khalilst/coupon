@@ -251,7 +251,7 @@ class Coupon extends Model
                 $list[] = [
                     'coupon_id' => $this->id,
                     'type' => ECodeType::UNIQUE,
-                    'value' => $line,
+                    'value' => trim($line),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
