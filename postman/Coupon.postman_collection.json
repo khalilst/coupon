@@ -149,6 +149,215 @@
 			"name": "Users",
 			"item": [
 				{
+					"name": "Coupons",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/{{prefix}}/coupons",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"coupons"
+									]
+								},
+								"description": "Return list of active coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/{{prefix}}/coupons/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"coupons",
+										"1"
+									]
+								},
+								"description": "Return list of active coupons"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "User1 Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a948e1d-6b86-445d-85c5-af56e53a43f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.environment.set(\"token\", pm.response.json().token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"user1@coupon.test\",\n\t\"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/{{prefix}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User2 Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a948e1d-6b86-445d-85c5-af56e53a43f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.environment.set(\"token\", pm.response.json().token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"user2@coupon.test\",\n\t\"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/{{prefix}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User3 Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a948e1d-6b86-445d-85c5-af56e53a43f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.environment.set(\"token\", pm.response.json().token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"user3@coupon.test\",\n\t\"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/{{prefix}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Me",
 					"request": {
 						"auth": {
