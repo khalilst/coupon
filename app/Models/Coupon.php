@@ -247,11 +247,13 @@ class Coupon extends Model
             $this->codes()->delete();
 
             $list = [];
-            while ($line = fgets($file) !== false) {
+            while (($line = fgets($file)) !== false) {
                 $list[] = [
                     'coupon_id' => $this->id,
                     'type' => ECodeType::UNIQUE,
                     'value' => $line,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
 
                 if (count($list) >= $limit) {
