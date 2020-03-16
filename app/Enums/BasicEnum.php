@@ -27,6 +27,12 @@ class BasicEnum extends Enum
         return static::random()->getValue();
     }
 
+    /**
+     * Return the translation of the given value
+     *
+     * @param  mixed $value
+     * @return string
+     */
     public static function __($value)
     {
         $class = strtolower(substr(class_basename(static::class), 1));
