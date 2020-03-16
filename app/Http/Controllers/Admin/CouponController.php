@@ -14,11 +14,15 @@ class CouponController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $coupons = Coupon::active()->paginate(config('coupon.page_size'));
+        $coupons = Coupon::active()
+            ->filter($request->filters ?? [])
+            ->order($request->orderings ?? [])
+            ->paginate(config('coupon.page_size'));
 
         return json(OK + ['coupons' => CouponResource::collection($coupons)]);
     }

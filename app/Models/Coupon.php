@@ -4,11 +4,14 @@ namespace App\Models;
 
 use App\Enums\ECodeType;
 use App\Enums\ECouponType;
+use App\Traits\GeneralScopes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Coupon extends Model
 {
+    use GeneralScopes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,8 +29,18 @@ class Coupon extends Model
      */
     public function scopeActive($query)
     {
-        return $query->where('published_at', '<=', now())
-            ->where('expired_at', '>', now());
+        return $query->notExpired()->where('published_at', '<=', now());
+    }
+
+    /**
+     * Scope a query to only include non-active coupons.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNotActive($query)
+    {
+        return $query->expired()->orWhere('published_at', '>', now());
     }
 
     /**
@@ -38,7 +51,18 @@ class Coupon extends Model
      */
     public function scopeExpired($query)
     {
-        return $query->whereNotNull('expired_at');
+        return $query->whereNotNull('expired_at')->where('expired_at', '<=', now());
+    }
+
+    /**
+     * Scope a query to only include non-expired coupons.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNotExpired($query)
+    {
+        return $query->whereNull('expired_at')->orWhere('expired_at', '>', now());
     }
 
     /**
@@ -48,7 +72,17 @@ class Coupon extends Model
      */
     public function getIsActiveAttribute()
     {
-        return is_null($this->expired_at) && $this->published_at <= now();
+        return !$this->expired && $this->published_at <= now();
+    }
+
+    /**
+     * Indicate whether the coupon is expired or not.
+     *
+     * @return boolean
+     */
+    public function getExpiredAttribute()
+    {
+        return !is_null($this->expired_at) && $this->expired_at <= now();
     }
 
     /**
