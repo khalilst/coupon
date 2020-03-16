@@ -19,10 +19,19 @@ Route::group(['namespace' => 'Auth'], function ($route) {
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| User Routes
 |--------------------------------------------------------------------------
 */
 
 Route::group(['middleware' => 'auth:api'], function ($route) {
     $route->get('/me', 'UserController@getMe');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Coupon Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/coupons', 'CouponController@index');
+Route::get('/coupons/{coupon}', 'CouponController@show')->middleware('auth:api');

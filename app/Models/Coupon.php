@@ -279,4 +279,96 @@ class Coupon extends Model
     {
         return storage_path('codes') . "/{$this->id}";
     }
+
+
+    /**
+     * Assign a valid code to the given user.
+     * If there was no more valid codes, the coupon expired automatically.
+     *
+     * @param  User   $user
+     * @return Code
+     */
+    public function assignCode(User $user)
+    {
+        if ($this->expired) {
+            return null;
+        }
+
+        return $this->assignNormalCode($user) ?: $this->assignUniqueCode($user);
+    }
+
+    /**
+     * Assign a normal code to the given user
+     *
+     * @param  User   $user
+     * @return Code
+     */
+    public function assignNormalCode(User $user)
+    {
+        $code = $this->codes()->where('type', ECodeType::NORMAL)->first();
+
+        if ($code) {
+            $code->users()->save($user);
+        }
+
+        return $code;
+    }
+
+    /**
+     * Assign an unused unique code with respect to concurrent requests
+     *
+     * @param  User   $user
+     * @return Code
+     */
+    public function assignUniqueCode(User $user)
+    {
+        $uniqeCodeQuery = $this->codes()
+            ->doesntHave('users')
+            ->selectRaw('MIN(id) as code_id, ?')
+            ->groupBy('coupon_id')
+            ->toSql();
+
+        DB::insert("INSERT INTO code_user (code_id, user_id) $uniqeCodeQuery", [
+            $user->id,
+            $this->id,
+        ]);
+
+        $code = $this->getUserCode($user, false);
+        if (!$code || !$this->remainingCodeCount) {
+            $this->update(['expired_at' => now()]);
+        }
+
+        return $code;
+    }
+
+    /**
+     * Return the remaining code count
+     *
+     * @return int
+     */
+    public function getRemainingCodeCountAttribute()
+    {
+        return $this->codes()->whereType(ECodeType::NORMAL)->count()
+            + $this->codes()->whereType(ECodeType::UNIQUE)->doesntHave('users')->count();
+    }
+
+    /**
+     * Return assigned code for the given user
+     *
+     * @param  User    $user [default = null]
+     * @param  boolean $assignIfNotExists [defualt = true]
+     * @return Code
+     */
+    public function getUserCode(User $user = null, $assignIfNotExists = true)
+    {
+        $user = $user ?? auth()->user();
+
+        $code = $this->codes()
+            ->whereHas('users', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->first();
+
+        return $code ?? $this->assignCode($user);
+    }
 }
