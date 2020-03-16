@@ -33,7 +33,6 @@ php artisan passport:install
 ```
 
 
-
 **Default users**
 
 To create Admin and two fake normal users run the following command:
@@ -50,6 +49,7 @@ Now you have the following users:
 ```
 The password is `password` for all users.
 
+
 **Fake Data**
 
 To generate default users plus fake `categories`, `brands` & `coupons` run the following command:
@@ -57,20 +57,24 @@ To generate default users plus fake `categories`, `brands` & `coupons` run the f
 php artisan db:seed
 ```
 
+
 **Codes Helper Command**
-To generate a codes with thousands of lines run the following command:
+
+To generate a codes file with thousands of lines run the following command:
 ```
 php artisan make:codes codes.txt
 ```
-It will generate a file in `storage/codes/codes.txt` with 500,000 random codes on each line.
+It will generate a file in `storage/codes/codes.txt` with 500,000 random codes per each line.
 
 However you can change the number of codes:
 ```
 php artisan make:codes codes.txt --count=1000000
 ```
 
+
 ## API Documentation
-Please first import `Postman` collection and evironment json files.
+Please import `Postman` collection and evironment json files from project folder.
+
 You can find couple of examples for available routes, just consider the `environment` variables to have correct values.
 
-For the sake of *ease*, first run the `login` API to fill up the `Bearer Token` **automatically**, then use other APIs.
+For the sake of *ease*, first run the `login` API to fill up the `Bearer Token` variable **automatically**, then use other APIs.
