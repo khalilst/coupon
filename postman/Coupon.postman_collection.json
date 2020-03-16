@@ -1,0 +1,916 @@
+{
+	"info": {
+		"_postman_id": "b1be6a75-56dd-437d-a77a-d2b8efc74319",
+		"name": "Coupon",
+		"description": "Mopon Test Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Reigster",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4e7c2f2a-fd2c-4a43-8920-9b22298c19d2",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.environment.set(\"token\", pm.response.json().token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"{{$randomFullName}}\",\n\t\"email\": \"{{$randomEmail}}\",\n\t\"password\": \"password\",\n\t\"password_confirmation\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/{{prefix}}/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a948e1d-6b86-445d-85c5-af56e53a43f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.environment.set(\"token\", pm.response.json().token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"qschroeder@example.net\",\n\t\"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/{{prefix}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/{{prefix}}/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/{{prefix}}/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"me"
+							]
+						},
+						"description": "Return the current user information"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Coupon",
+					"item": [
+						{
+							"name": "Index",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "bf80af59-6361-4553-9b89-90c48ce29b86",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons"
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Index With Filtering",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "c68d7a35-4194-4916-9871-b97ac6a737bf",
+										"exec": [
+											"const moment = require('moment');",
+											"pm.globals.set(\"now\", moment().format(\"YYYY-MM-DD HH:mm:ss\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons?filters[published_at][max]={{now}}&filters[type][eq]=2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons"
+									],
+									"query": [
+										{
+											"key": "filters[published_at][max]",
+											"value": "{{now}}"
+										},
+										{
+											"key": "filters[type][eq]",
+											"value": "2"
+										}
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Index With Ordering",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons?orderings[created_at]=DESC&orderings[amount]=ASC",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons"
+									],
+									"query": [
+										{
+											"key": "orderings[created_at]",
+											"value": "DESC"
+										},
+										{
+											"key": "orderings[amount]",
+											"value": "ASC"
+										}
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Index With Filtering & Ordering",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "c68d7a35-4194-4916-9871-b97ac6a737bf",
+										"exec": [
+											"const moment = require('moment');",
+											"pm.globals.set(\"now\", moment().format(\"YYYY-MM-DD HH:mm:ss\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons?filters[published_at][max]={{now}}&filters[type][eq]=2&orderings[created_at]=DESC",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons"
+									],
+									"query": [
+										{
+											"key": "filters[published_at][max]",
+											"value": "{{now}}"
+										},
+										{
+											"key": "filters[type][eq]",
+											"value": "2"
+										},
+										{
+											"key": "orderings[created_at]",
+											"value": "DESC"
+										}
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Store",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e21e35bb-27c9-43b2-89d8-dac62373095d",
+										"exec": [
+											"const moment = require('moment');",
+											"pm.globals.set(\"now\", moment().format(\"YYYY-MM-DD HH:mm:ss\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "applicatoin/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"brand_id\": 1,\n\t\"name\": \"{{$randomWord}}\",\n\t\"link\": \"{{$randomUrl}}\",\n\t\"amount\": \"{{$randomInt}}\",\n\t\"type\": 1,\n\t\"code\": \"{{$randomWord}}\",\n\t\"published_at\": \"{{now}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons"
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Store 500,000 Unique Codes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e21e35bb-27c9-43b2-89d8-dac62373095d",
+										"exec": [
+											"const moment = require('moment');",
+											"pm.globals.set(\"now\", moment().format(\"YYYY-MM-DD HH:mm:ss\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "applicatoin/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "brand_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "{{$randomWord}}",
+											"type": "text"
+										},
+										{
+											"key": "link",
+											"value": "{{$randomUrl}}",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "{{$randomInt}}",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "published_at",
+											"value": "{{now}}",
+											"type": "text"
+										},
+										{
+											"key": "codes",
+											"type": "file",
+											"src": "/home/xalil/Projects/mopon/coupon/storage/codes/codes.txt"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons"
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e21e35bb-27c9-43b2-89d8-dac62373095d",
+										"exec": [
+											"const moment = require('moment');",
+											"pm.globals.set(\"now\", moment().format(\"YYYY/MM/DD HH:mm:ss\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "applicatoin/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"brand_id\": 2,\n\t\"name\": \"{{$randomWord}}\",\n\t\"link\": \"{{$randomUrl}}\",\n\t\"amount\": \"{{$randomInt}}\",\n\t\"type\": 1,\n\t\"code\": \"{{$randomWord}}\",\n\t\"published_at\": \"{{now}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons/32",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons",
+										"32"
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Unique Codes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e21e35bb-27c9-43b2-89d8-dac62373095d",
+										"exec": [
+											"const moment = require('moment');",
+											"pm.globals.set(\"now\", moment().format(\"YYYY-MM-DD HH:mm:ss\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "applicatoin/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "_method",
+											"value": "PATCH",
+											"type": "text"
+										},
+										{
+											"key": "brand_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "{{$randomWord}}",
+											"type": "text"
+										},
+										{
+											"key": "link",
+											"value": "{{$randomUrl}}",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "{{$randomInt}}",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "published_at",
+											"value": "{{now}}",
+											"type": "text"
+										},
+										{
+											"key": "codes",
+											"type": "file",
+											"src": "/home/xalil/Projects/mopon/coupon/storage/codes/codes1.txt"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons",
+										"1"
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e21e35bb-27c9-43b2-89d8-dac62373095d",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "applicatoin/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons",
+										"1"
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e21e35bb-27c9-43b2-89d8-dac62373095d",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "applicatoin/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{adminPrefix}}/coupons/31",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{adminPrefix}}",
+										"coupons",
+										"31"
+									]
+								},
+								"description": "Return the list of coupons"
+							},
+							"response": []
+						}
+					],
+					"description": "Coupon Rest APIs",
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a948e1d-6b86-445d-85c5-af56e53a43f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.environment.set(\"token\", pm.response.json().token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"admin@coupon.test\",\n\t\"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/{{prefix}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
