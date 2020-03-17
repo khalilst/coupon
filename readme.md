@@ -3,6 +3,8 @@
 
 This is a demo project to cover rudimentary admin & normal user requirements in a simple couponing system.
 
+### [Live Demo](https://demo.softek.ir)
+
 **Admin Actions:**
 * List Active Coupons (with multiple filtering and ordering on all fields)
 * Create new coupon (Normal Code & Unique Code)
@@ -78,3 +80,13 @@ Please import `Postman` collection and evironment json files from project folder
 You can find couple of examples for available routes, just consider the `environment` variables to have correct values.
 
 For the sake of *ease*, first run the `login` API to fill up the `Bearer Token` variable **automatically**, then use other APIs.
+
+## Tests
+
+About 25 tests has been written for `Coupon` API's and you can run those with the following command:
+
+```
+./vendor/bin/phpunit
+```
+
+**Note**: Please consider test configuration set to use `in memeory Sqlite` and you need to install `sqlite` and `pdo` in your test machine.
