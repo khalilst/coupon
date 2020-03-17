@@ -22,6 +22,13 @@ class Coupon extends Model
     ];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['published_at', 'expired_at'];
+
+    /**
      * Scope a query to only include active coupons.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

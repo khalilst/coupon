@@ -4,12 +4,11 @@ namespace Tests;
 
 use App\Models\Coupon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-abstract class CouponTestCase extends BaseTestCase
+class CouponTestCase extends TestCase
 {
-    use CreatesApplication, RefreshDatabase, WithoutMiddleware;
+    use RefreshDatabase, WithoutMiddleware;
 
     /**
      * Setup the test environment.
@@ -30,6 +29,7 @@ abstract class CouponTestCase extends BaseTestCase
      */
     protected function createFakeData()
     {
+        $this->artisan('db:seed --class UsersTableSeeder');
         $this->artisan('db:seed --class BrandsTableSeeder');
 
         //Create active coupons more than coupon double page_size

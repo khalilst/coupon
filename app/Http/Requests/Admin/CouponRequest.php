@@ -13,7 +13,7 @@ class CouponRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->isAdmin;
+        return true;
     }
 
     /**
@@ -30,6 +30,7 @@ class CouponRequest extends FormRequest
             'amount' => 'required|integer',
             'type' => 'required|integer',
             'published_at' => 'required|date',
+            'expired_at' => 'nullable|date',
         ];
     }
 }
