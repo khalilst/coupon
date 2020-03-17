@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\CouponRequest;
 use App\Http\Resources\Admin\CouponResource;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CouponController extends Controller
 {
@@ -85,11 +86,13 @@ class CouponController extends Controller
      */
     public function destroy(Coupon $coupon)
     {
-        $result = $coupon->remove()
-            ? OK
-            : NOK + ['message' => __('messages.coupon.delete_failed')];
+        if (!$coupon->remove()) {
+            throw ValidationException::withMessages([
+                'coupon' => [__('messages.coupon.delete_failed')],
+            ]);
+        }
 
-        return json($result);
+        return json(OK);
     }
 
     /**

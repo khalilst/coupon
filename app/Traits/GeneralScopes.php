@@ -50,7 +50,7 @@ trait GeneralScopes
                 break;
 
             case EOperator::LIKE:
-                $query->where($field, 'like', $value);
+                $query->where($field, 'LIKE', "%$value%");
                 break;
 
             case EOperator::EQUAL:

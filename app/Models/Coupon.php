@@ -22,6 +22,13 @@ class Coupon extends Model
     ];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['published_at', 'expired_at'];
+
+    /**
      * Scope a query to only include active coupons.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
@@ -169,6 +176,7 @@ class Coupon extends Model
 
         //Update the coupon
         $this->update($data);
+        $this->refresh();
 
         return $this;
     }
@@ -324,12 +332,13 @@ class Coupon extends Model
     {
         $uniqeCodeQuery = $this->codes()
             ->doesntHave('users')
-            ->selectRaw('MIN(id) as code_id, ?')
+            ->selectRaw('MIN(id) as code_id, ?, ?')
             ->groupBy('coupon_id')
             ->toSql();
 
-        DB::insert("INSERT INTO code_user (code_id, user_id) $uniqeCodeQuery", [
+        DB::insert("INSERT INTO code_user (code_id, user_id, created_at) $uniqeCodeQuery", [
             $user->id,
+            now()->format('Y-m-d H:i:s'),
             $this->id,
         ]);
 
