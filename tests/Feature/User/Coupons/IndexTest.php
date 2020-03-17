@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Coupons;
+namespace Tests\Feature\User\Coupons;
 
 use App\Http\Resources\CouponResource;
 use App\Models\Coupon;

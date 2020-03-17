@@ -332,12 +332,13 @@ class Coupon extends Model
     {
         $uniqeCodeQuery = $this->codes()
             ->doesntHave('users')
-            ->selectRaw('MIN(id) as code_id, ?')
+            ->selectRaw('MIN(id) as code_id, ?, ?')
             ->groupBy('coupon_id')
             ->toSql();
 
-        DB::insert("INSERT INTO code_user (code_id, user_id) $uniqeCodeQuery", [
+        DB::insert("INSERT INTO code_user (code_id, user_id, created_at) $uniqeCodeQuery", [
             $user->id,
+            now()->format('Y-m-d H:i:s'),
             $this->id,
         ]);
 
