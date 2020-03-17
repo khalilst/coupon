@@ -2,18 +2,19 @@
 
 namespace Tests\Feature\Admin\Coupons;
 
-use App\Http\Resources\Admin\CouponResource;
+use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
 use Tests\Cases\AdminCouponTestCase;
 
 /*
 |--------------------------------------------------------------------------
-| API Address: /admin/coupons
+| API Address: /api/admin/coupons
 |--------------------------------------------------------------------------
 | 1. Test Accuracy and Structure
 | 2. Test Pagination
 | 3. Test Filtering
 | 4. Test Ordering
+|
 */
 
 class IndexTest extends AdminCouponTestCase
