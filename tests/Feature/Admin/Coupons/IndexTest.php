@@ -25,7 +25,7 @@ class IndexTest extends AdminCouponTestCase
      */
     public function testStructureAccuracy()
     {
-        $this->get(static::ADDR)
+        $this->json('get', static::ADDR, [])
             ->assertOk()
             ->assertJson(['status' => true])
             ->assertJsonFragment(['name' => Coupon::active()->first()->name])
@@ -64,7 +64,7 @@ class IndexTest extends AdminCouponTestCase
         for ($page = 1; $page <= $pageCount; $page++) {
             $size = min($pageSize, $count - $pageSize * ($page - 1));
 
-            $this->get(static::ADDR . "?page=$page")
+            $this->json('get', static::ADDR . "?page=$page", [])
                 ->assertOk()
                 ->assertJsonCount($size, 'coupons');
         }
@@ -82,30 +82,29 @@ class IndexTest extends AdminCouponTestCase
         //Increase page size config to remove pagination and have all coupons at first page
         config()->set('coupon.page_size', Coupon::active()->count());
 
-        //Choose a random active coupn
-        $coupon = Coupon::active()->inRandomOrder()->first();
+        $coupon = $this->randomCoupon();
 
         //Partial json we expect to have in search result
         $jsonFragment = (new CouponResource($coupon))->toArray(null);
 
         //Filter by name (by LIKE operator)
         $name = substr($coupon->name, rand(1, 3));
-        $this->get(static::ADDR . "?filters[name][like]=$name")
+        $this->json('get', static::ADDR . "?filters[name][like]=$name", [])
             ->assertOk()
             ->assertJsonFragment($jsonFragment);
 
         //Filter by amount (Exact Search)
-        $this->get(static::ADDR . "?filters[amount][eq]={$coupon->amount}")
+        $this->json('get', static::ADDR . "?filters[amount][eq]={$coupon->amount}", [])
             ->assertOk()
             ->assertJsonFragment($jsonFragment);
 
         //Filter by created_at (before or less than or equal search)
-        $this->get(static::ADDR . "?filters[created_at][max]={$coupon->created_at}")
+        $this->json('get', static::ADDR . "?filters[created_at][max]={$coupon->created_at}", [])
             ->assertOk()
             ->assertJsonFragment($jsonFragment);
 
         //Filter by published_at (next or greater than or equal search)
-        $this->get(static::ADDR . "?filters[published_at][min]={$coupon->published_at}")
+        $this->json('get', static::ADDR . "?filters[published_at][min]={$coupon->published_at}", [])
             ->assertOk()
             ->assertJsonFragment($jsonFragment);
     }
@@ -145,7 +144,7 @@ class IndexTest extends AdminCouponTestCase
     {
             $jsonFragment = (new CouponResource($coupon))->toArray(null);
 
-            $this->get(static::ADDR . "?orderings[$attribute]=$direction")
+            $this->json('get', static::ADDR . "?orderings[$attribute]=$direction", [])
                 ->assertOk()
                 ->assertJsonFragment($jsonFragment);
     }

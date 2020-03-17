@@ -88,7 +88,10 @@ class StoreTest extends AdminCouponTestCase
     public function testCouponStoreWithUniqueCodes()
     {
         $brand = Brand::inRandomOrder()->first();
-        $coupon = factory(Coupon::class)->make(['brand_id' => $brand->id]);
+        $coupon = factory(Coupon::class)->make([
+            'brand_id' => $brand->id,
+            'type' => ECouponType::DISCOUNT_CODE,
+        ]);
 
         //Create codes file
         $filename = randomStr();
