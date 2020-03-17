@@ -4,7 +4,7 @@ namespace Tests\Feature\Admin\Coupons;
 
 use App\Http\Resources\Admin\CouponResource;
 use App\Models\Coupon;
-use Tests\CouponTestCase;
+use Tests\Cases\AdminCouponTestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,15 +16,8 @@ use Tests\CouponTestCase;
 | 4. Test Ordering
 */
 
-class IndexTest extends CouponTestCase
+class IndexTest extends AdminCouponTestCase
 {
-    /**
-     * The API's Address
-     *
-     * @const
-     */
-    protected const ADDR = '/api/admin/coupons';
-
     /**
      * Test the API's accuracy and result structure
      *

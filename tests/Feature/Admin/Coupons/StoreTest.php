@@ -8,19 +8,12 @@ use App\Models\Brand;
 use App\Models\Coupon;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Tests\Cases\AdminCouponTestCase;
 use Tests\CodesFileFactory;
-use Tests\CouponTestCase;
 
-class StoreTest extends CouponTestCase
+class StoreTest extends AdminCouponTestCase
 {
     use RequestTest;
-
-    /**
-     * The API's Address
-     *
-     * @const
-     */
-    protected const ADDR = '/api/admin/coupons';
 
     /**
      * Assert the coupon store API

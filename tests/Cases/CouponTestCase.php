@@ -1,14 +1,22 @@
 <?php
 
-namespace Tests;
+namespace Tests\Cases;
 
 use App\Models\Coupon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
 class CouponTestCase extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
+
+    /**
+     * The API's Address
+     *
+     * @const
+     */
+    protected const ADDR = '/api/v1.0/coupons';
 
     /**
      * Setup the test environment.
