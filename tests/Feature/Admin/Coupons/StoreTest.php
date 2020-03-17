@@ -13,7 +13,7 @@ use Tests\CouponTestCase;
 
 class StoreTest extends CouponTestCase
 {
-    use StoreRequestTest;
+    use RequestTest;
 
     /**
      * The API's Address

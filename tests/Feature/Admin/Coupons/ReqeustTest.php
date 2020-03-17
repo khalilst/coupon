@@ -5,7 +5,7 @@ namespace Tests\Feature\Admin\Coupons;
 use App\Models\Brand;
 use App\Models\Coupon;
 
-trait StoreRequestTest
+trait RequestTest
 {
     /**
      * Test validation errors for required fields, brand id and field formats
