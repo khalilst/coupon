@@ -176,6 +176,7 @@ class Coupon extends Model
 
         //Update the coupon
         $this->update($data);
+        $this->refresh();
 
         return $this;
     }
