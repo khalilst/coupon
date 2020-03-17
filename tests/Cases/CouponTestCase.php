@@ -3,13 +3,13 @@
 namespace Tests\Cases;
 
 use App\Models\Coupon;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class CouponTestCase extends TestCase
 {
-    use RefreshDatabase, WithoutMiddleware;
+    use RefreshDatabase;
 
     /**
      * The API's Address
@@ -28,6 +28,15 @@ class CouponTestCase extends TestCase
         parent::setUp();
 
         $this->createFakeData();
+
+        $this->withoutMiddleware([
+            \App\Http\Middleware\Admin::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\Authenticate::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \Illuminate\Auth\Middleware\Authorize::class,
+        ]);
     }
 
     /**
@@ -44,5 +53,15 @@ class CouponTestCase extends TestCase
         do {
             $this->artisan('db:seed --class CouponsTableSeeder');
         } while(Coupon::active()->count() < config('coupon.page_size') * 2);
+    }
+
+    /**
+     * Return a random active coupon
+     *
+     * @return Coupon
+     */
+    public function randomCoupon()
+    {
+        return Coupon::active()->inRandomOrder()->first();
     }
 }

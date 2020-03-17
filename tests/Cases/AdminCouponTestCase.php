@@ -3,8 +3,6 @@
 namespace Tests\Cases;
 
 use App\Models\Coupon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class AdminCouponTestCase extends CouponTestCase
 {
